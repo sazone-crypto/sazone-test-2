@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Jogos Grátis</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        :root {
+            --bg: #0a0a2a;
+            --accent: #ff00aa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a2a, #1a0033);
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent);
+            box-shadow: 0 0 20px var(--accent);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            text-shadow: 0 0 10px var(--accent);
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px var(--accent); }
+            to { text-shadow: 0 0 30px var(--accent), 0 0 40px #00ffff; }
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.6);
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            background: #220033;
+            color: white;
+            border: 3px solid var(--accent);
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: var(--accent);
+            color: #000;
+            transform: scale(1.1);
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .game-card {
+            background: rgba(20, 10, 40, 0.95);
+            border: 4px solid #ff00aa;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.4s, box-shadow 0.4s;
+            cursor: pointer;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 0 40px #ff00ff;
+        }
+        
+        .game-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+        
+        .game-info {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .game-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #00ffff;
+        }
+        
+        .play-btn {
+            background: #ff00aa;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-family: 'Press Start 2P', cursive;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .play-btn:hover {
+            background: #00ffff;
+            color: #000;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0,0,0,0.8);
+            margin-top: 50px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .game-container {
+            background: #000;
+            padding: 20px;
+            border: 6px solid #ff00aa;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GAMEHUB</h1>
+        <p style="margin-top:10px; color:#00ffff;">JOGOS CLÁSSICOS GRÁTIS</p>
+    </header>
+    
+    <nav>
+        <button class="nav-btn" onclick="showSection('home')">INÍCIO</button>
+        <button class="nav-btn" onclick="showSection('games')">JOGOS</button>
+        <button class="nav-btn" onclick="showSection('about')">SOBRE</button>
+    </nav>
+    
+    <div id="home" class="section">
+        <div style="text-align:center; padding:60px 20px;">
+            <h2 style="font-size:2em; margin-bottom:20px;">BEM-VINDO AO GAMEHUB!</h2>
+            <p style="max-width:700px; margin:0 auto 40px; line-height:1.6;">
+                A maior coleção de jogos browser grátis com visual retro-pixel!
+            </p>
+            <button onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})" 
+                    style="padding:20px 50px; font-size:1.3em; background:#ff00aa; border:4px solid #fff; cursor:pointer;">
+                JOGAR AGORA →
+            </button>
+        </div>
+    </div>
+    
+    <div id="games" class="section" style="display:block;">
+        <div class="games-grid">
+            <!-- Jogo 1: Tic Tac Toe -->
+            <div class="game-card" onclick="playGame(1)">
+                <img src="https://picsum.photos/id/1015/400/200" alt="Tic Tac Toe">
+                <div class="game-info">
+                    <div class="game-title">VELHA</div>
+                    <p>Jogo clássico da velha</p>
+                    <button class="play-btn">JOGAR</button>
+                </div>
+            </div>
+            
+            <!-- Jogo 2: Snake -->
+            <div class="game-card" onclick="playGame(2)">
+                <img src="https://picsum.photos/id/201/400/200" alt="Snake">
+                <div class="game-info">
+                    <div class="game-title">COBRA</div>
+                    <p>Clássico Snake</p>
+                    <button class="play-btn">JOGAR</button>
+                </div>
+            </div>
+            
+            <!-- Jogo 3: Memory -->
+            <div class="game-card" onclick="playGame(3)">
+                <img src="https://picsum.photos/id/301/400/200" alt="Memory">
+                <div class="game-info">
+                    <div class="game-title">MEMÓRIA</div>
+                    <p>Jogo da Memória</p>
+                    <button class="play-btn">JOGAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para jogos -->
+    <div id="gameModal" class="modal">
+        <div class="game-container" id="modalContent">
+            <button onclick="closeModal()" style="position:absolute; top:20px; right:20px; padding:10px 20px; background:red; color:white; border:none; cursor:pointer;">FECHAR</button>
+            <div id="gameArea" style="margin-top:40px;"></div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>GameHub © 2026 - Feito com ❤️ por Grok</p>
+        <p style="margin-top:10px; font-size:0.8em;">Apenas para diversão no navegador</p>
+    </footer>
+
+    <script>
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => {
+                s.style.display = 'none';
+            });
+            if (section === 'home') {
+                document.getElementById('home').style.display = 'block';
+            } else if (section === 'games') {
+                document.getElementById('games').style.display = 'block';
+            }
+        }
+        
+        let currentGame = null;
+        
+        function playGame(gameId) {
+            const modal = document.getElementById('gameModal');
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = '';
+            
+            if (gameId === 1) {
+                // Tic Tac Toe
+                gameArea.innerHTML = `
+                    <h2 style="text-align:center; margin-bottom:20px; color:#ff00aa;">JOGO DA VELHA</h2>
+                    <div id="ticTacToe" style="display:grid; grid-template-columns:repeat(3,100px); gap:8px; margin:0 auto; width:320px; justify-content:center;">
+                    </div>
+                    <div style="text-align:center; margin-top:20px;">
+                        <button onclick="resetTicTacToe()" style="padding:10px 25px;">REINICIAR</button>
+                        <p id="ticStatus" style="margin-top:15px; font-size:1.1em;"></p>
+                    </div>
+                `;
+                
+                createTicTacToeBoard();
+            } 
+            else if (gameId === 2) {
+                // Snake Game
+                gameArea.innerHTML = `
+                    <h2 style="text-align:center; margin-bottom:20px; color:#ff00aa;">SNAKE</h2>
+                    <div style="text-align:center;">
+                        <canvas id="snakeCanvas" width="400" height="400" style="border:4px solid #00ffff; background:#000;"></canvas>
+                        <p style="margin-top:15px;">Use as setas do teclado</p>
+                        <p id="snakeScore" style="font-size:1.2em; color:#ffff00;">Pontos: 0</p>
+                    </div>
+                `;
+                setTimeout(initSnake, 100);
+            } 
+            else if (gameId === 3) {
+                // Memory Game
+                gameArea.innerHTML = `
+                    <h2 style="text-align:center; margin-bottom:20px; color:#ff00aa;">JOGO DA MEMÓRIA</h2>
+                    <div id="memoryBoard" style="display:grid; grid-template-columns:repeat(4,80px); gap:10px; margin:0 auto; width:380px; justify-content:center;"></div>
+                    <div style="text-align:center; margin-top:25px;">
+                        <p id="memoryStatus">Encontre os pares!</p>
+                        <button onclick="resetMemory()">REINICIAR</button>
+                    </div>
+                `;
+                setTimeout(initMemory, 200);
+            }
+            
+            modal.style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('gameModal').style.display = 'none';
+            // Stop snake if running
+            if (window.snakeInterval) clearInterval(window.snakeInterval);
+        }
+        
+        // TIC TAC TOE
+        let ticBoard = Array(9).fill(null);
+        let ticCurrentPlayer = 'X';
+        
+        function createTicTacToeBoard() {
+            const boardEl = document.getElementById('ticTacToe');
+            boardEl.innerHTML = '';
+            ticBoard = Array(9).fill(null);
+            ticCurrentPlayer = 'X';
+            
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.style.width = '100px';
+                cell.style.height = '100px';
+                cell.style.background = '#110033';
+                cell.style.border = '3px solid #ff00aa';
+                cell.style.display = 'flex';
+                cell.style.alignItems = 'center';
+                cell.style.justifyContent = 'center';
+                cell.style.fontSize = '3em';
+                cell.style.cursor = 'pointer';
+                cell.style.color = '#00ffff';
+                cell.dataset.index = i;
+                cell.addEventListener('click', handleTicClick);
+                boardEl.appendChild(cell);
+            }
+            updateTicStatus();
+        }
+        
+        function handleTicClick(e) {
+            const index = parseInt(e.target.dataset.index);
+            if (ticBoard[index] || checkTicWinner()) return;
+            
+            ticBoard[index] = ticCurrentPlayer;
+            e.target.textContent = ticCurrentPlayer;
+            
+            if (checkTicWinner()) {
+                document.getElementById('ticStatus').textContent = `Jogador ${ticCurrentPlayer} VENCEU! 🎉`;
+                return;
+            }
+            
+            if (ticBoard.every(cell => cell)) {
+                document.getElementById('ticStatus').textContent = "EMPATE!";
+                return;
+            }
+            
+            ticCurrentPlayer = ticCurrentPlayer === 'X' ? 'O' : 'X';
+            updateTicStatus();
+        }
+        
+        function checkTicWinner() {
+            const wins = [
+                [0,1,2], [3,4,5], [6,7,8],
+                [0,3,6], [1,4,7], [2,5,8],
+                [0,4,8], [2,4,6]
+            ];
+            
+            return wins.some(combo => {
+                const [a,b,c] = combo;
+                return ticBoard[a] && ticBoard[a] === ticBoard[b] && ticBoard[a] === ticBoard[c];
+            });
+        }
+        
+        function updateTicStatus() {
+            document.getElementById('ticStatus').textContent = `Vez do jogador ${ticCurrentPlayer}`;
+        }
+        
+        function resetTicTacToe() {
+            createTicTacToeBoard();
+        }
+        
+        // SNAKE GAME
+        let snake = [{x:10, y:10}];
+        let food = {x:15, y:15};
+        let dx = 1, dy = 0;
+        let score = 0;
+        let gameSpeed = 120;
+        
+        function initSnake() {
+            const canvas = document.getElementById('snakeCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            snake = [{x:10, y:10}];
+            food = {x:15, y:15};
+            dx = 1; dy = 0;
+            score = 0;
+            document.getElementById('snakeScore').textContent = 'Pontos: 0';
+            
+            if (window.snakeInterval) clearInterval(window.snakeInterval);
+            
+            window.snakeInterval = setInterval(() => {
+                updateSnake(ctx, canvas);
+            }, gameSpeed);
+            
+            document.addEventListener('keydown', handleSnakeKey);
+        }
+        
+        function updateSnake(ctx, canvas) {
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            
+            // Wall collision
+            if (head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20) {
+                gameOverSnake();
+                return;
+            }
+            
+            // Self collision
+            if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+                gameOverSnake();
+                return;
+            }
+            
+            snake.unshift(head);
+            
+            // Eat food
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                document.getElementById('snakeScore').textContent = `Pontos: ${score}`;
+                food = {
+                    x: Math.floor(Math.random() * 20),
+                    y: Math.floor(Math.random() * 20)
+                };
+            } else {
+                snake.pop();
+            }
+            
+            // Draw
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Snake
+            ctx.fillStyle = '#00ff00';
+            snake.forEach((segment, i) => {
+                ctx.fillRect(segment.x * 20, segment.y * 20, 19, 19);
+                if (i === 0) {
+                    ctx.fillStyle = '#00cc00';
+                    ctx.fillRect(segment.x * 20 + 5, segment.y * 20 + 5, 9, 9);
+                    ctx.fillStyle = '#00ff00';
+                }
+            });
+            
+            // Food
+            ctx.fillStyle = '#ff0000';
+            ctx.fillRect(food.x * 20, food.y * 20, 19, 19);
+        }
+        
+        function handleSnakeKey(e) {
+            switch(e.key) {
+                case 'ArrowUp': if (dy !== 1) { dx=0; dy=-1; } break;
+                case 'ArrowDown': if (dy !== -1) { dx=0; dy=1; } break;
+                case 'ArrowLeft': if (dx !== 1) { dx=-1; dy=0; } break;
+                case 'ArrowRight': if (dx !== -1) { dx=1; dy=0; } break;
+            }
+        }
+        
+        function gameOverSnake() {
+            clearInterval(window.snakeInterval);
+            alert(`Game Over! Pontuação final: ${score}`);
+            closeModal();
+        }
+        
+        // MEMORY GAME
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        
+        function initMemory() {
+            const emojis = ['🍎','🍌','🍒','🍇','🍉','🍓','🥝','🍍'];
+            memoryCards = [...emojis, ...emojis];
+            memoryCards.sort(() => Math.random() - 0.5);
+            flippedCards = [];
+            matchedPairs = 0;
+            
+            const board = document.getElementById('memoryBoard');
+            board.innerHTML = '';
+            
+            memoryCards.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.style.width = '80px';
+                card.style.height = '80px';
+                card.style.background = '#220044';
+                card.style.border = '4px solid #ff00aa';
+                card.style.display = 'flex';
+                card.style.alignItems = 'center';
+                card.style.justifyContent = 'center';
+                card.style.fontSize = '2.5em';
+                card.style.cursor = 'pointer';
+                card.style.transition = 'transform 0.3s';
+                card.dataset.index = index;
+                card.dataset.emoji = emoji;
+                card.addEventListener('click', flipCard);
+                board.appendChild(card);
+            });
+        }
+        
+        function flipCard(e) {
+            const card = e.target;
+            const index = parseInt(card.dataset.index);
+            
+            if (flippedCards.length >= 2 || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+            
+            card.textContent = card.dataset.emoji;
+            card.style.background = '#440066';
+            card.classList.add('flipped');
+            flippedCards.push(card);
+            
+            if (flippedCards.length === 2) {
+                checkMatch();
+            }
+        }
+        
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            
+            if (card1.dataset.emoji === card2.dataset.emoji) {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedPairs++;
+                
+                if (matchedPairs === 8) {
+                    setTimeout(() => {
+                        alert('Parabéns! Você completou o jogo da memória! 🏆');
+                        closeModal();
+                    }, 500);
+                }
+            } else {
+                setTimeout(() => {
+                    card1.textContent = '';
+                    card2.textContent = '';
+                    card1.style.background = '#220044';
+                    card2.style.background = '#220044';
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                }, 800);
+            }
+            
+            flippedCards = [];
+        }
+        
+        function resetMemory() {
+            initMemory();
+        }
+        
+        // Keyboard support for modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('gameModal');
+                if (modal.style.display === 'flex') closeModal();
+            }
+        });
+        
+        // Initialize
+        console.log('%cGameHub carregado com sucesso! 🎮', 'color:#ff00aa; font-size:16px');
+    </script>
+</body>
+</html>
